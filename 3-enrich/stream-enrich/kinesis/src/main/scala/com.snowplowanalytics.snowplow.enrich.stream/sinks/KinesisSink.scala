@@ -60,9 +60,8 @@ object KinesisSink {
   def validatePii(enrichmentRegistry: EnrichmentRegistry, kinesisConfig: Kinesis, streamName: Option[String]): \/[String, Unit] =
     (emitPii(enrichmentRegistry), streamName) match {
         case (true, Some(piiStreamName)) => validate(kinesisConfig, piiStreamName)
-        case (false, Some(piiStreamName)) => s"PII was configured to not emit, but PII stream name was given as $piiStreamName".left
         case (true, None) => "PII was configured to emit, but no PII stream name was given".left
-        case (false, None) => ().right
+        case _ => ().right
     }
 
   /**
